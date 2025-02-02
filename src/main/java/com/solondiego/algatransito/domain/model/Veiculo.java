@@ -1,5 +1,6 @@
 package com.solondiego.algatransito.domain.model;
 
+import com.solondiego.algatransito.domain.exception.NegocioException;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -47,7 +48,7 @@ public class Veiculo {
     //    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private OffsetDateTime dataApreensao;
 
-    @OneToMany(mappedBy = "veiculo")
+    @OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL)
     private List<Autuacao> autuacoes = new ArrayList<>();
 
     public Autuacao adicionarAutuacao(Autuacao autuacao){
@@ -57,6 +58,32 @@ public class Veiculo {
         getAutuacoes().add(autuacao);
 
         return autuacao;
+    }
+
+    public void apreender(){
+        if (estaApreendido()){
+            throw new NegocioException("Veículo já se encontra apreendido");
+        }
+
+        setStatus(StatusVeiculo.APREENDIDO);
+        setDataApreensao(OffsetDateTime.now());
+    }
+
+    public void removerApreensao(){
+        if (naoEstaApreendido()){
+            throw new NegocioException("O veículo não se está apreendido");
+        }
+
+        setStatus(StatusVeiculo.REGULAR);
+        setDataApreensao(null);
+    }
+
+    public boolean estaApreendido(){
+        return StatusVeiculo.APREENDIDO.equals(getStatus());
+    }
+
+    public boolean naoEstaApreendido(){
+        return !estaApreendido();
     }
 
 }

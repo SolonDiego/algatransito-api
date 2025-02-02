@@ -5,6 +5,7 @@ import com.solondiego.algatransito.api.model.VeiculoModel;
 import com.solondiego.algatransito.api.model.input.VeiculoInput;
 import com.solondiego.algatransito.domain.model.Veiculo;
 import com.solondiego.algatransito.domain.repository.VeiculoRepository;
+import com.solondiego.algatransito.domain.service.ApreensaoVeiculoService;
 import com.solondiego.algatransito.domain.service.RegistroVeiculoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class VeiculoController {
     private final VeiculoRepository veiculoRepository;
     private final RegistroVeiculoService registroVeiculoService;
     private final VeiculoAssembler veiculoAssembler;
+    private final ApreensaoVeiculoService apreensaoVeiculoService;
 
     @GetMapping
     public List<VeiculoModel> listar() {
@@ -73,4 +75,17 @@ public class VeiculoController {
         //return veiculoAssembler.toModel(registroVeiculoService.cadastrar(veiculo));
 
     }
+
+    @PutMapping("/{veiculoId}/apreensao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void apreender(@PathVariable Long veiculoId){
+        apreensaoVeiculoService.apreender(veiculoId);
+    }
+
+    @DeleteMapping("/{veiculoId}/apreensao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removerApreensao (@PathVariable Long veiculoId){
+        apreensaoVeiculoService.removerApreensao(veiculoId);
+    }
+
 }
