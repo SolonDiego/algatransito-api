@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 
@@ -22,11 +21,14 @@ public class RegistroVeiculoService {
 
     @Transactional
     public Veiculo cadastrar(Veiculo novoVeiculo) {
+
         if (novoVeiculo.getId() != null) {
             throw new NegocioException("Veículo a ser cadastrado não deve possuir um código.");
         }
 
-        boolean placaEmUso = veiculoRepository.findByPlaca(novoVeiculo.getPlaca()).filter(veiculo -> !veiculo.equals(novoVeiculo)).isPresent();
+        boolean placaEmUso = veiculoRepository.findByPlaca(novoVeiculo.getPlaca())
+                .filter(veiculo -> !veiculo.equals(novoVeiculo))
+                .isPresent();
 
         if (placaEmUso) {
             throw new NegocioException("Já existe um veículo cadastrado com essa placa.");

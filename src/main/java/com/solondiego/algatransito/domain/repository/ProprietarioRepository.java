@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ProprietarioRepository extends JpaRepository<Proprietario,Long> {
+public interface ProprietarioRepository extends JpaRepository<Proprietario, Long> {
 
     List<Proprietario> findByNomeContaining(String nome);
 

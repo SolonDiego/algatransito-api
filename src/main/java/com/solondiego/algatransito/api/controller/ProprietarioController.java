@@ -47,31 +47,43 @@ public class ProprietarioController {
 
     @GetMapping("/nome")
     public List<Proprietario> buscarPeloNome() {
+
         return repository.findByNomeContaining("Joao");
+
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Proprietario adicionar(@Valid @RequestBody Proprietario proprietario) {
+
         return registroProprietarioService.salvar(proprietario);
+
     }
 
     @PutMapping("/{proprietarioId}")
     public ResponseEntity<Proprietario> atualizar(@PathVariable Long proprietarioId, @Valid @RequestBody Proprietario proprietario) {
+
         if (!repository.existsById(proprietarioId)) {
+
             return ResponseEntity.notFound().build();
+
         }
+
         proprietario.setId(proprietarioId);
         Proprietario proprietarioAtualizado = registroProprietarioService.salvar(proprietario);
+
         return ResponseEntity.ok(proprietarioAtualizado);
     }
 
     @DeleteMapping("/{proprietarioId}")
     public ResponseEntity<Void> remover(@PathVariable Long proprietarioId) {
+
         if (!repository.existsById(proprietarioId)) {
             return ResponseEntity.notFound().build();
         }
+
         registroProprietarioService.excluir(proprietarioId);
+
         return ResponseEntity.noContent().build();
     }
 }

@@ -15,20 +15,19 @@ public class VeiculoAssembler {
 
     private final ModelMapper modelMapper;
 
-    public Veiculo toEntity (VeiculoInput veiculoInput){
+    public Veiculo toEntity(VeiculoInput veiculoInput) {
         return modelMapper.map(veiculoInput, Veiculo.class);
     }
 
-    public VeiculoModel toModel (Veiculo veiculo){
+    public VeiculoModel toModel(Veiculo veiculo) {
         return modelMapper.map(veiculo, VeiculoModel.class);
     }
 
-    public List<VeiculoModel> toCollectionModel(List<Veiculo> veiculos){
+    public List<VeiculoModel> toCollectionModel(List<Veiculo> veiculos) {
         return veiculos.stream()
                 .map(this::toModel)
                 .toList();
     }
-
 
 
 }
